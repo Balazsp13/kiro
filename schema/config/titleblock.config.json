@@ -1,0 +1,72 @@
+{
+  "note": "Swappable title-block (rajzpecset) layout. Defines field order, Hungarian labels, the AutoCAD attribute tag the plugin populates in the house title-block block, and x/y placement fallbacks in paper millimeters used when no house template block exists. Replace tags and placements when the user supplies the real house .dwt/.dwg.",
+  "block_name": "RAJZPECSET",
+  "fallback_text_height_mm": 2.5,
+  "fields": [
+    {
+      "key": "subject",
+      "label_hu": "Targ",
+      "label_full_hu": "Targy",
+      "attribute_tag": "TARGY",
+      "fallback_xy_mm": { "x": 150.0, "y": 40.0 }
+    },
+    {
+      "key": "rajzszam",
+      "label_hu": "Rajzszam",
+      "label_full_hu": "Rajzszam",
+      "attribute_tag": "RAJZSZAM",
+      "fallback_xy_mm": { "x": 150.0, "y": 32.0 }
+    },
+    {
+      "key": "datum",
+      "label_hu": "Datum",
+      "label_full_hu": "Datum",
+      "attribute_tag": "DATUM",
+      "fallback_xy_mm": { "x": 150.0, "y": 24.0 }
+    },
+    {
+      "key": "kivitelezo",
+      "label_hu": "Kivitelezo",
+      "label_full_hu": "Kivitelezo",
+      "attribute_tag": "KIVITELEZO",
+      "fallback_xy_mm": { "x": 150.0, "y": 16.0 }
+    },
+    {
+      "key": "tervezo",
+      "label_hu": "Tervezo",
+      "label_full_hu": "Tervezo",
+      "attribute_tag": "TERVEZO",
+      "fallback_xy_mm": { "x": 150.0, "y": 8.0 }
+    },
+    {
+      "key": "muszaki_rajzolo",
+      "label_hu": "Muszaki Rajzolo",
+      "label_full_hu": "Muszaki Rajzolo",
+      "attribute_tag": "MUSZAKI_RAJZOLO",
+      "fallback_xy_mm": { "x": 220.0, "y": 8.0 }
+    }
+  ],
+  "summary_fields": [
+    {
+      "key": "meretarany",
+      "label_hu": "Meretarany",
+      "label_full_hu": "Meretarany",
+      "attribute_tag": "MERETARANY",
+      "fallback_xy_mm": { "x": 220.0, "y": 32.0 }
+    },
+    {
+      "key": "erintett_kozterulet",
+      "label_hu": "Erintett kozterulet",
+      "label_full_hu": "Erintett kozterulet",
+      "attribute_tag": "ERINTETT_KOZTERULET",
+      "fallback_xy_mm": { "x": 220.0, "y": 24.0 }
+    },
+    {
+      "key": "kabel_teljes_hossza_m",
+      "label_hu": "Kabel teljes hossza",
+      "label_full_hu": "Kabel teljes hossza (m)",
+      "attribute_tag": "KABEL_HOSSZ",
+      "fallback_xy_mm": { "x": 220.0, "y": 16.0 }
+    }
+  ]
+}

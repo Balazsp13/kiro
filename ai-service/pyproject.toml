@@ -1,0 +1,35 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "drawingspec-ai"
+version = "0.1.0"
+description = "AI service that turns an e-kozmu base map, a field sketch, and a brief into a validated helyszinrajz drawing-spec JSON using Anthropic Claude vision."
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+authors = [{ name = "Helyszinrajz scaffold" }]
+keywords = ["autocad", "helyszinrajz", "claude", "anthropic", "drawing-spec"]
+
+# Core has NO required third-party dependencies: it runs on the Python standard
+# library alone (urllib.request for the live HTTP client). This matters because
+# in restricted networks `pip install` may be unavailable, so the package must
+# work with nothing installed from PyPI.
+dependencies = []
+
+[project.optional-dependencies]
+# Optional live backend using the official Anthropic SDK. When present it is
+# preferred over the stdlib urllib client; when absent the urllib client is
+# used. NOTE: `pip install` may fail in restricted networks (no PyPI access);
+# the package deliberately does not require this to function.
+live = ["anthropic>=0.39.0"]
+# Optional PDF-to-image converters for the vision request. Either one works;
+# pdf2image also needs the poppler system package.
+pdf = ["pymupdf>=1.23.0"]
+
+[project.scripts]
+drawingspec-ai = "drawingspec_ai.cli:main"
+
+[tool.setuptools]
+packages = ["drawingspec_ai"]

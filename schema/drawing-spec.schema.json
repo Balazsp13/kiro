@@ -1,0 +1,399 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://helyszinrajz.local/schema/drawing-spec.schema.json",
+  "title": "Helyszinrajz Drawing Spec",
+  "description": "Shared contract for a Hungarian electrical connection site plan (helyszinrajz). The AI service emits a document conforming to this schema; the AutoCAD Map 3D 2026 plugin consumes it to render editable geometry. Scale is fixed at 1:500 and 1 drawing unit = 1 meter.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["meta", "project", "raster", "georeference", "layers", "symbols", "cable_runs", "legend", "title_block", "bom", "summary"],
+  "properties": {
+    "meta": {
+      "type": "object",
+      "description": "Document metadata about generation and provenance.",
+      "additionalProperties": false,
+      "required": ["schema_version", "generator", "created_utc", "confidence_note"],
+      "properties": {
+        "schema_version": {
+          "type": "string",
+          "description": "Verzioszam: version of this drawing-spec contract the document targets.",
+          "const": "1.0.0"
+        },
+        "generator": {
+          "type": "string",
+          "description": "Eloallito: name/identifier of the tool or model that produced the spec."
+        },
+        "created_utc": {
+          "type": "string",
+          "description": "Letrehozas idopontja (UTC, ISO 8601)."
+        },
+        "confidence_note": {
+          "type": "string",
+          "description": "Megbizhatosagi megjegyzes: statement that a human engineer confirms survey-accurate placement before issue; the AI output is a draft proposal only."
+        }
+      }
+    },
+    "project": {
+      "type": "object",
+      "description": "Projekt adatok: core identifying data for the drawing and its parties.",
+      "additionalProperties": false,
+      "required": ["subject", "rajzszam", "datum", "kivitelezo", "tervezo", "muszaki_rajzolo", "scale_denominator"],
+      "properties": {
+        "subject": {
+          "type": "string",
+          "description": "Targ: the subject/title of the project (address, hrsz., and purpose)."
+        },
+        "rajzszam": {
+          "type": "string",
+          "description": "Rajzszam: drawing number."
+        },
+        "datum": {
+          "type": "string",
+          "description": "Datum: drawing date."
+        },
+        "kivitelezo": {
+          "type": "string",
+          "description": "Kivitelezo: contractor company."
+        },
+        "tervezo": {
+          "type": "string",
+          "description": "Tervezo: designer/engineer of record."
+        },
+        "muszaki_rajzolo": {
+          "type": "string",
+          "description": "Muszaki rajzolo: technical draftsperson."
+        },
+        "scale_denominator": {
+          "type": "integer",
+          "description": "Meretarany nevezoje: scale denominator. Fixed at 500 (i.e. 1:500).",
+          "const": 500
+        }
+      }
+    },
+    "raster": {
+      "type": "object",
+      "description": "Raszter alaterkep: the e-kozmu (e-utility) base map PDF/image reference and attach info. Raster only, no vector geometry.",
+      "additionalProperties": false,
+      "required": ["file", "attach"],
+      "properties": {
+        "file": {
+          "type": "string",
+          "description": "Fajl hivatkozas: path or name of the base map PDF/image file."
+        },
+        "dpi": {
+          "type": "number",
+          "description": "Felbontas (DPI): raster resolution, optional.",
+          "minimum": 1
+        },
+        "attach": {
+          "type": "object",
+          "description": "Beillesztesi informacio: how the raster is attached/positioned in model space.",
+          "additionalProperties": false,
+          "required": ["insertion_point", "scale_denominator"],
+          "properties": {
+            "insertion_point": {
+              "$ref": "#/$defs/point",
+              "description": "Beillesztesi pont: insertion point in the raster image/paper coordinate space (the same space the georeference points map to model meters). The plugin runs this point through the georeference transform to place the raster; it is NOT a model-meter coordinate. Use the raster's own origin (typically 0,0) unless the base map is cropped."
+            },
+            "scale_denominator": {
+              "type": "integer",
+              "description": "Beillesztesi meretarany: scale denominator for the attach, 500 for 1:500.",
+              "const": 500
+            },
+            "rotation_deg": {
+              "type": "number",
+              "description": "Elforgatas (fok): rotation of the attached raster in degrees."
+            }
+          }
+        }
+      }
+    },
+    "georeference": {
+      "type": "array",
+      "description": "Georeferencia: EXACTLY 2 reference points mapping image/paper coordinates to model coordinates in meters. Two points fix translation, rotation, and uniform scale so that 1 drawing unit = 1 meter.",
+      "minItems": 2,
+      "maxItems": 2,
+      "items": {
+        "$ref": "#/$defs/georeference_point"
+      }
+    },
+    "layers": {
+      "type": "array",
+      "description": "Retegek: array of layer keys used by the drawing. Each key should resolve to an entry in symbols.config.json layer definitions or be a plain layer name.",
+      "items": {
+        "type": "string",
+        "description": "Reteg kulcs vagy nev: layer key or name."
+      }
+    },
+    "symbols": {
+      "type": "array",
+      "description": "Jelek: placed symbol instances (e.g. tervezett fogyasztasmero szekreny).",
+      "items": {
+        "$ref": "#/$defs/symbol_instance"
+      }
+    },
+    "cable_runs": {
+      "type": "array",
+      "description": "Kabel nyomvonalak: polyline runs such as the planned connection cable or the kutatoarok (exploratory trench). Vertices are in model meters.",
+      "items": {
+        "$ref": "#/$defs/cable_run"
+      }
+    },
+    "labels": {
+      "type": "array",
+      "description": "Feliratok: free text annotations placed in model space.",
+      "items": {
+        "$ref": "#/$defs/label"
+      }
+    },
+    "legend": {
+      "type": "array",
+      "description": "Jelmagyarazat: ordered legend entries pairing a symbol_key with its explanatory text.",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/legend_entry"
+      }
+    },
+    "title_block": {
+      "type": "object",
+      "description": "Fejlec / rajzpecset: key/value map of title-block field values. Keys correspond to tags defined in titleblock.config.json.",
+      "additionalProperties": {
+        "type": "string"
+      }
+    },
+    "bom": {
+      "type": "array",
+      "description": "Anyagjegyzek (BOM): bill of materials rows.",
+      "items": {
+        "$ref": "#/$defs/bom_row"
+      }
+    },
+    "summary": {
+      "type": "object",
+      "description": "Osszegzes: summary fields shown near the title block.",
+      "additionalProperties": false,
+      "required": ["meretarany", "erintett_kozterulet", "kabel_teljes_hossza_m"],
+      "properties": {
+        "meretarany": {
+          "type": "string",
+          "description": "Meretarany: human readable scale, e.g. '1:500'."
+        },
+        "erintett_kozterulet": {
+          "type": "string",
+          "description": "Erintett kozterulet: affected public land / public area description."
+        },
+        "kabel_teljes_hossza_m": {
+          "type": "number",
+          "description": "Kabel teljes hossza (m): total cable length in meters.",
+          "minimum": 0
+        }
+      }
+    }
+  },
+  "$defs": {
+    "point": {
+      "type": "object",
+      "description": "Pont: a 2D point. Interpreted in model meters unless stated otherwise.",
+      "additionalProperties": false,
+      "required": ["x", "y"],
+      "properties": {
+        "x": {
+          "type": "number",
+          "description": "X koordinata."
+        },
+        "y": {
+          "type": "number",
+          "description": "Y koordinata."
+        }
+      }
+    },
+    "vertex": {
+      "type": "object",
+      "description": "Toreespont: a polyline vertex in model meters.",
+      "additionalProperties": false,
+      "required": ["x", "y"],
+      "properties": {
+        "x": {
+          "type": "number",
+          "description": "X koordinata (meter)."
+        },
+        "y": {
+          "type": "number",
+          "description": "Y koordinata (meter)."
+        }
+      }
+    },
+    "georeference_point": {
+      "type": "object",
+      "description": "Georeferencia pont: a correspondence between an image/paper coordinate and a model coordinate in meters.",
+      "additionalProperties": false,
+      "required": ["image", "model", "units"],
+      "properties": {
+        "image": {
+          "$ref": "#/$defs/point",
+          "description": "Kep/papir koordinata: point in paper/image units."
+        },
+        "model": {
+          "$ref": "#/$defs/point",
+          "description": "Modell koordinata: corresponding point in model meters."
+        },
+        "units": {
+          "type": "string",
+          "description": "Mertekegyseg: model units. Must be 'meter' so that 1 drawing unit = 1 meter.",
+          "const": "meter"
+        },
+        "note": {
+          "type": "string",
+          "description": "Megjegyzes: derived note, e.g. that 1 drawing unit = 1 meter."
+        }
+      }
+    },
+    "symbol_instance": {
+      "type": "object",
+      "description": "Jel peldany: a placed symbol instance referencing a symbol_key from symbols.config.json.",
+      "additionalProperties": false,
+      "required": ["symbol_key", "position"],
+      "properties": {
+        "symbol_key": {
+          "type": "string",
+          "description": "Jel kulcs: key into symbols.config.json."
+        },
+        "position": {
+          "$ref": "#/$defs/point",
+          "description": "Pozicio: placement point in model meters."
+        },
+        "rotation_deg": {
+          "type": "number",
+          "description": "Elforgatas (fok): rotation in degrees."
+        },
+        "scale": {
+          "type": "number",
+          "description": "Lepteke: symbol scale factor.",
+          "minimum": 0
+        },
+        "label": {
+          "type": "string",
+          "description": "Felirat: optional label text for this symbol."
+        }
+      }
+    },
+    "cable_run": {
+      "type": "object",
+      "description": "Kabel nyomvonal: a polyline run with vertices in model meters.",
+      "additionalProperties": false,
+      "required": ["run_id", "vertices", "layer"],
+      "properties": {
+        "run_id": {
+          "type": "string",
+          "description": "Nyomvonal azonosito: unique run identifier."
+        },
+        "symbol_key": {
+          "type": "string",
+          "description": "Jel/stilus kulcs: symbol or style key into symbols.config.json for layer/color/linetype."
+        },
+        "style": {
+          "type": "string",
+          "description": "Stilus: optional explicit style name."
+        },
+        "vertices": {
+          "type": "array",
+          "description": "Toreespontok: ordered polyline vertices in model meters.",
+          "minItems": 2,
+          "items": {
+            "$ref": "#/$defs/vertex"
+          }
+        },
+        "layer": {
+          "type": "string",
+          "description": "Reteg: layer key or name."
+        },
+        "label": {
+          "type": "string",
+          "description": "Felirat: optional run label."
+        },
+        "length_m": {
+          "type": "number",
+          "description": "Hossz (m): run length in meters, optional and computable from vertices.",
+          "minimum": 0
+        },
+        "cable_type": {
+          "type": "string",
+          "description": "Kabel tipus: cable type, e.g. '4x35mm2 NAYY-J'."
+        }
+      }
+    },
+    "label": {
+      "type": "object",
+      "description": "Felirat: a free text annotation in model space.",
+      "additionalProperties": false,
+      "required": ["text", "position"],
+      "properties": {
+        "text": {
+          "type": "string",
+          "description": "Szoveg: annotation text."
+        },
+        "position": {
+          "$ref": "#/$defs/point",
+          "description": "Pozicio: placement point in model meters."
+        },
+        "height_m": {
+          "type": "number",
+          "description": "Szovegmagassag (m): text height in model meters.",
+          "minimum": 0
+        },
+        "rotation_deg": {
+          "type": "number",
+          "description": "Elforgatas (fok): rotation in degrees."
+        },
+        "layer": {
+          "type": "string",
+          "description": "Reteg: layer key or name."
+        }
+      }
+    },
+    "legend_entry": {
+      "type": "object",
+      "description": "Jelmagyarazat tetel: a single legend entry.",
+      "additionalProperties": false,
+      "required": ["symbol_key", "text"],
+      "properties": {
+        "symbol_key": {
+          "type": "string",
+          "description": "Jel kulcs: key into symbols.config.json."
+        },
+        "text": {
+          "type": "string",
+          "description": "Magyarazat: explanatory text for the symbol."
+        }
+      }
+    },
+    "bom_row": {
+      "type": "object",
+      "description": "Anyagjegyzek sor: a bill of materials row.",
+      "additionalProperties": false,
+      "required": ["item", "qty", "unit"],
+      "properties": {
+        "item": {
+          "type": "string",
+          "description": "Megnevezes: item name."
+        },
+        "type": {
+          "type": "string",
+          "description": "Tipus: item type/spec."
+        },
+        "qty": {
+          "type": "number",
+          "description": "Mennyiseg: quantity.",
+          "minimum": 0
+        },
+        "unit": {
+          "type": "string",
+          "description": "Mertekegyseg: unit (e.g. db, m)."
+        },
+        "note": {
+          "type": "string",
+          "description": "Megjegyzes: optional note."
+        }
+      }
+    }
+  }
+}

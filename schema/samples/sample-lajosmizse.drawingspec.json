@@ -1,0 +1,154 @@
+{
+  "meta": {
+    "schema_version": "1.0.0",
+    "generator": "drawingspec-ai (Claude vision) - draft proposal",
+    "created_utc": "2026-02-10T09:30:00Z",
+    "confidence_note": "AI-generated draft proposal. A human engineer must confirm survey-accurate placement against the e-kozmu base map and the on-site field sketch before issue."
+  },
+  "project": {
+    "subject": "6050 Lajosmizse, 0125/2 hrsz. alatti ingatlan villamos energia ellátása",
+    "rajzszam": "ALL-26/10-01/1",
+    "datum": "2026.02.10",
+    "kivitelezo": "ALL IN VILL KFT.",
+    "tervezo": "Nagy Peter",
+    "muszaki_rajzolo": "Kiss Anna",
+    "scale_denominator": 500
+  },
+  "raster": {
+    "file": "lajosmizse-0125-2-ekozmu.pdf",
+    "dpi": 300,
+    "attach": {
+      "insertion_point": { "x": 0.0, "y": 0.0 },
+      "scale_denominator": 500,
+      "rotation_deg": 0.0
+    }
+  },
+  "georeference": [
+    {
+      "image": { "x": 0.0, "y": 0.0 },
+      "model": { "x": 0.0, "y": 0.0 },
+      "units": "meter",
+      "note": "1 drawing unit = 1 meter; origo reference point."
+    },
+    {
+      "image": { "x": 200.0, "y": 0.0 },
+      "model": { "x": 100.0, "y": 0.0 },
+      "units": "meter",
+      "note": "1 drawing unit = 1 meter; scale/orientation reference point."
+    }
+  ],
+  "layers": [
+    "E-TERV-MERO",
+    "E-TERV-KABEL",
+    "E-TERV-KUTATOAROK",
+    "E-MEGL-04KV",
+    "E-MEGL-20KV",
+    "K-MEGL-GAZ",
+    "K-MEGL-VIZ",
+    "K-MEGL-SZENNYVIZ",
+    "K-MEGL-HIRK-FF",
+    "K-MEGL-HIRK-FA"
+  ],
+  "symbols": [
+    {
+      "symbol_key": "tervezett_fogy_mero_szekreny",
+      "position": { "x": 15.0, "y": 3.0 },
+      "rotation_deg": 0.0,
+      "scale": 1.0,
+      "label": "S300 tip. MN 1x32A"
+    }
+  ],
+  "cable_runs": [
+    {
+      "run_id": "KABEL-01",
+      "symbol_key": "tervezett_csatlakozo_foldkabel",
+      "vertices": [
+        { "x": 0.0, "y": 0.0 },
+        { "x": 10.0, "y": 0.0 },
+        { "x": 15.0, "y": 0.0 }
+      ],
+      "layer": "E-TERV-KABEL",
+      "label": "4x35mm2 NAYY-J",
+      "length_m": 15,
+      "cable_type": "4x35mm2 NAYY-J"
+    },
+    {
+      "run_id": "KUTATOAROK-01",
+      "symbol_key": "tervezett_kutatoarok",
+      "vertices": [
+        { "x": 0.0, "y": 0.0 },
+        { "x": 15.0, "y": 0.0 }
+      ],
+      "layer": "E-TERV-KUTATOAROK",
+      "label": "Kutatoarok",
+      "length_m": 15
+    }
+  ],
+  "labels": [
+    {
+      "text": "Re<=10 ohm",
+      "position": { "x": 15.0, "y": 1.5 },
+      "height_m": 0.5,
+      "rotation_deg": 0.0,
+      "layer": "E-TERV-MERO"
+    }
+  ],
+  "legend": [
+    { "symbol_key": "tervezett_fogy_mero_szekreny", "text": "Tervezett fogyasztasmero szekreny" },
+    { "symbol_key": "tervezett_csatlakozo_foldkabel", "text": "Tervezett csatlakozo foldkabel" },
+    { "symbol_key": "tervezett_kutatoarok", "text": "Tervezett kutatoarok" },
+    { "symbol_key": "meglevo_04kv_halozat", "text": "Meglevo 0,4 kV halozat" },
+    { "symbol_key": "meglevo_20kv_halozat", "text": "Meglevo 20 kV halozat" },
+    { "symbol_key": "meglevo_gazvezetek", "text": "Meglevo gazvezetek" },
+    { "symbol_key": "meglevo_vizvezetek", "text": "Meglevo vizvezetek" },
+    { "symbol_key": "meglevo_szennyvizvezetek", "text": "Meglevo szennyvizvezetek" },
+    { "symbol_key": "meglevo_foldfeletti_hirkozlesi", "text": "Meglevo foldfeletti hirkozlesi" },
+    { "symbol_key": "meglevo_foldalatti_hirkozlesi", "text": "Meglevo foldalatti hirkozlesi" }
+  ],
+  "title_block": {
+    "TARGY": "6050 Lajosmizse, 0125/2 hrsz. alatti ingatlan villamos energia ellátása",
+    "RAJZSZAM": "ALL-26/10-01/1",
+    "DATUM": "2026.02.10",
+    "KIVITELEZO": "ALL IN VILL KFT.",
+    "TERVEZO": "Nagy Peter",
+    "MUSZAKI_RAJZOLO": "Kiss Anna",
+    "MERETARANY": "1:500",
+    "ERINTETT_KOZTERULET": "0125/2 hrsz. kozterulet",
+    "KABEL_HOSSZ": "15 m"
+  },
+  "bom": [
+    {
+      "item": "Fogyasztasmero szekreny",
+      "type": "S300 tip. MN 1x32A",
+      "qty": 1,
+      "unit": "db",
+      "note": "Tervezett fogyasztasmero szekreny"
+    },
+    {
+      "item": "Csatlakozo foldkabel",
+      "type": "4x35mm2 NAYY-J",
+      "qty": 15,
+      "unit": "m",
+      "note": "Tervezett csatlakozo foldkabel"
+    },
+    {
+      "item": "Kutatoarok",
+      "type": "kezi foldmunka",
+      "qty": 15,
+      "unit": "m",
+      "note": "Tervezett kutatoarok"
+    },
+    {
+      "item": "Foldeles",
+      "type": "Re<=10 ohm",
+      "qty": 1,
+      "unit": "db",
+      "note": "Foldelesi ellenallas kovetelmeny"
+    }
+  ],
+  "summary": {
+    "meretarany": "1:500",
+    "erintett_kozterulet": "0125/2 hrsz. kozterulet",
+    "kabel_teljes_hossza_m": 15
+  }
+}

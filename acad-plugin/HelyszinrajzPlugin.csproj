@@ -1,0 +1,83 @@
+<!--
+  HelyszinrajzPlugin.csproj
+
+  AutoCAD Map 3D 2026 managed plugin (net8.0-windows) that renders a Hungarian
+  electrical connection site plan (helyszinrajz) from a drawing-spec JSON that
+  conforms to schema/drawing-spec.schema.json.
+
+  AutoCAD assemblies:
+  The AutoCAD managed assemblies (accoremgd.dll, acdbmgd.dll, acmgd.dll and the
+  optional AcMPolygonMgd.dll / AdWindows.dll) are NOT distributed with this
+  source and are NOT redistributable. They are provided only by a local
+  installation of AutoCAD Map 3D 2026. This project therefore CANNOT be built
+  on a machine without that installation (and it only builds on Windows).
+
+  The references below resolve through the overridable MSBuild property
+  $(AutoCADSdkDir). It defaults to the standard AutoCAD 2026 install directory.
+  Override it from the command line or an environment variable when the
+  assemblies live elsewhere, e.g.:
+
+      dotnet build -c Release -p:AutoCADSdkDir="D:\Autodesk\AutoCAD 2026"
+
+  or set the AutoCADSdkDir environment variable before building in Visual Studio.
+
+  CopyLocal is disabled (<Private>false</Private>) because the host AutoCAD
+  process already loads these assemblies; copying them next to the plugin would
+  cause version conflicts at NETLOAD time.
+-->
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <AssemblyName>HelyszinrajzPlugin</AssemblyName>
+    <RootNamespace>Helyszinrajz</RootNamespace>
+    <OutputType>Library</OutputType>
+    <Nullable>enable</Nullable>
+    <LangVersion>latest</LangVersion>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
+    <!-- AutoCAD loads the plugin into its own AppDomain; do not auto-generate a runtimeconfig that fights the host. -->
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <!-- Overridable path to the AutoCAD Map 3D 2026 managed SDK assemblies. -->
+    <AutoCADSdkDir Condition="'$(AutoCADSdkDir)' == ''">C:\Program Files\Autodesk\AutoCAD 2026</AutoCADSdkDir>
+  </PropertyGroup>
+
+  <!--
+    The AutoCAD-free transform math test project lives under tests/. Exclude it
+    from this plugin's default .cs globbing so the plugin never depends on the
+    test harness and the test sources are not compiled into the plugin.
+  -->
+  <ItemGroup>
+    <Compile Remove="tests/**/*.cs" />
+  </ItemGroup>
+
+  <!--
+    AutoCAD managed references. HintPath points at $(AutoCADSdkDir).
+    <Private>false</Private> == CopyLocal false. No NuGet packages are used;
+    JSON is handled by System.Text.Json which ships with the .NET 8 runtime.
+  -->
+  <ItemGroup>
+    <Reference Include="accoremgd">
+      <HintPath>$(AutoCADSdkDir)\accoremgd.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="acdbmgd">
+      <HintPath>$(AutoCADSdkDir)\acdbmgd.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="acmgd">
+      <HintPath>$(AutoCADSdkDir)\acmgd.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <!-- Optional: present in the AutoCAD install; referenced for the ribbon/UI and MPolygon helpers. -->
+    <Reference Include="AcMPolygonMgd" Condition="Exists('$(AutoCADSdkDir)\AcMPolygonMgd.dll')">
+      <HintPath>$(AutoCADSdkDir)\AcMPolygonMgd.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="AdWindows" Condition="Exists('$(AutoCADSdkDir)\AdWindows.dll')">
+      <HintPath>$(AutoCADSdkDir)\AdWindows.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+  </ItemGroup>
+
+</Project>

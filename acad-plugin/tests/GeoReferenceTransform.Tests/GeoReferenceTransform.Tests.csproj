@@ -1,0 +1,32 @@
+<!--
+  GeoReferenceTransform.Tests.csproj
+
+  A self-contained console test harness for the pure 2-point similarity math
+  used by the plugin's GeoReferenceTransform. It references NO Autodesk.* type
+  and uses NO external NuGet package, so it builds and runs anywhere the .NET
+  SDK is installed (including CI sandboxes without AutoCAD and without network
+  access to a NuGet feed).
+
+  Run it with:
+
+      dotnet run -c Release
+
+  It exits 0 when all assertions pass and non-zero on the first failure, so it
+  can be wired into CI as a pass/fail check. The main plugin project
+  (HelyszinrajzPlugin.csproj) does NOT reference this project.
+-->
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <OutputType>Exe</OutputType>
+    <Nullable>enable</Nullable>
+    <LangVersion>latest</LangVersion>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <AssemblyName>GeoReferenceTransformTests</AssemblyName>
+    <RootNamespace>Helyszinrajz.Tests</RootNamespace>
+    <!-- No NuGet restore needed; keep restore from reaching out to feeds. -->
+    <RestorePackagesWithLockFile>false</RestorePackagesWithLockFile>
+  </PropertyGroup>
+
+</Project>

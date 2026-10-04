@@ -1,0 +1,94 @@
+{
+  "note": "Swappable symbol/layer catalog for the helyszinrajz plugin. Each entry maps a symbol_key to display name, layer, ACI color index, linetype, AutoCAD block name, and a fallback geometry hint. The block_name values are PLACEHOLDERS until the user supplies their house .dwt/.dwg template; when a referenced block is missing, the plugin draws the fallback_geometry instead. Edit this file (not the schema) to retarget blocks, layers, colors, and linetypes.",
+  "symbols": {
+    "tervezett_fogy_mero_szekreny": {
+      "display_name_hu": "Tervezett fogyasztasmero szekreny",
+      "layer": "E-TERV-MERO",
+      "color": 1,
+      "linetype": "CONTINUOUS",
+      "block_name": "FOGY_MERO_SZEKRENY",
+      "description": "Planned consumer metering cabinet (fogyasztasmero szekreny)."
+    },
+    "tervezett_csatlakozo_foldkabel": {
+      "display_name_hu": "Tervezett csatlakozo foldkabel",
+      "layer": "E-TERV-KABEL",
+      "color": 1,
+      "linetype": "CONTINUOUS",
+      "block_name": null,
+      "fallback_geometry": "polyline",
+      "description": "Planned connection underground cable (csatlakozo foldkabel)."
+    },
+    "tervezett_kutatoarok": {
+      "display_name_hu": "Tervezett kutatoarok",
+      "layer": "E-TERV-KUTATOAROK",
+      "color": 2,
+      "linetype": "DASHED",
+      "block_name": null,
+      "fallback_geometry": "polyline",
+      "description": "Planned exploratory trench (kutatoarok)."
+    },
+    "meglevo_04kv_halozat": {
+      "display_name_hu": "Meglevo 0,4 kV halozat",
+      "layer": "E-MEGL-04KV",
+      "color": 3,
+      "linetype": "CONTINUOUS",
+      "block_name": null,
+      "fallback_geometry": "polyline",
+      "description": "Existing 0.4 kV low-voltage network (meglevo 0,4 kV halozat)."
+    },
+    "meglevo_20kv_halozat": {
+      "display_name_hu": "Meglevo 20 kV halozat",
+      "layer": "E-MEGL-20KV",
+      "color": 5,
+      "linetype": "CONTINUOUS",
+      "block_name": null,
+      "fallback_geometry": "polyline",
+      "description": "Existing 20 kV medium-voltage network (meglevo 20 kV halozat)."
+    },
+    "meglevo_gazvezetek": {
+      "display_name_hu": "Meglevo gazvezetek",
+      "layer": "K-MEGL-GAZ",
+      "color": 2,
+      "linetype": "DASHDOT",
+      "block_name": null,
+      "fallback_geometry": "polyline",
+      "description": "Existing gas pipeline (gazvezetek)."
+    },
+    "meglevo_vizvezetek": {
+      "display_name_hu": "Meglevo vizvezetek",
+      "layer": "K-MEGL-VIZ",
+      "color": 4,
+      "linetype": "DASHDOT",
+      "block_name": null,
+      "fallback_geometry": "polyline",
+      "description": "Existing water pipeline (vizvezetek)."
+    },
+    "meglevo_szennyvizvezetek": {
+      "display_name_hu": "Meglevo szennyvizvezetek",
+      "layer": "K-MEGL-SZENNYVIZ",
+      "color": 6,
+      "linetype": "DASHDOT",
+      "block_name": null,
+      "fallback_geometry": "polyline",
+      "description": "Existing sewage pipeline (szennyvizvezetek)."
+    },
+    "meglevo_foldfeletti_hirkozlesi": {
+      "display_name_hu": "Meglevo foldfeletti hirkozlesi",
+      "layer": "K-MEGL-HIRK-FF",
+      "color": 7,
+      "linetype": "DIVIDE",
+      "block_name": null,
+      "fallback_geometry": "polyline",
+      "description": "Existing overhead telecommunications line (foldfeletti hirkozlesi)."
+    },
+    "meglevo_foldalatti_hirkozlesi": {
+      "display_name_hu": "Meglevo foldalatti hirkozlesi",
+      "layer": "K-MEGL-HIRK-FA",
+      "color": 8,
+      "linetype": "DIVIDE",
+      "block_name": null,
+      "fallback_geometry": "polyline",
+      "description": "Existing underground telecommunications line (foldalatti hirkozlesi)."
+    }
+  }
+}

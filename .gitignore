@@ -1,0 +1,41 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyc
+.venv/
+venv/
+env/
+dist/
+build/
+*.egg-info/
+.eggs/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# .NET / C#
+bin/
+obj/
+*.user
+*.suo
+*.userprefs
+.vs/
+
+# Editors
+.idea/
+.vscode/
+*.swp
+*~
+*.bak
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Local pipeline outputs (generated drawing specs)
+*.drawingspec.out.json
+spec.json
+/tmp/spec.json
+
+# Do NOT ignore the committed sample spec:
+!schema/samples/sample-lajosmizse.drawingspec.json
